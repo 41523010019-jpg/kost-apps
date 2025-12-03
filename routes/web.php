@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Backend\Category\Index as CategoryIndex;
+use App\Livewire\Backend\PricePackage\Index;
 use App\Livewire\Backend\Room\Index as RoomIndex;
 use App\Livewire\Frontend\Index as FrontendIndex;
 use App\Livewire\Settings\Appearance;
@@ -21,6 +22,7 @@ Route::prefix('dashboard')
     ->group(function () {
         Route::get('categories', CategoryIndex::class)->name('categories.index');
         Route::get('rooms', RoomIndex::class)->name('rooms.index');
+        Route::get('price-packages', Index::class)->name('price-packages.index');
     });
 
 Route::middleware(['auth'])->group(function () {

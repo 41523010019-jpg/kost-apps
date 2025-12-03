@@ -22,6 +22,9 @@
                 <flux:navlist.item icon="folder-git-2" :href="route('dashboard.rooms.index')" :current="request()->routeIs('dashboard.rooms.index')" wire:navigate>
                     {{ __('Rooms') }}
                 </flux:navlist.item>
+                <flux:navlist.item icon="folder-git-2" :href="route('dashboard.price-packages.index')" :current="request()->routeIs('dashboard.price-packages.index')" wire:navigate>
+                    {{ __('Price Packages') }}
+                </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
 

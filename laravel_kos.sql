@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 03 Des 2025 pada 00.11
+-- Waktu pembuatan: 03 Des 2025 pada 10.17
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -24,6 +24,30 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `bookings`
+--
+
+CREATE TABLE `bookings` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `room_id` bigint(20) UNSIGNED NOT NULL,
+  `start_date` date DEFAULT NULL,
+  `next_billing_date` date DEFAULT NULL,
+  `status` enum('pending','active','expired') NOT NULL DEFAULT 'pending',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `bookings`
+--
+
+INSERT INTO `bookings` (`id`, `user_id`, `room_id`, `start_date`, `next_billing_date`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '2025-12-03', '2026-01-03', 'active', '2025-12-03 02:14:36', '2025-12-03 02:14:36');
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `cache`
 --
 
@@ -32,14 +56,6 @@ CREATE TABLE `cache` (
   `value` mediumtext NOT NULL,
   `expiration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data untuk tabel `cache`
---
-
-INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
-('laravel_cache_356a192b7913b04c54574d18c28d46e6395428ab', 'i:2;', 1764696050),
-('laravel_cache_356a192b7913b04c54574d18c28d46e6395428ab:timer', 'i:1764696050;', 1764696050);
 
 -- --------------------------------------------------------
 
@@ -67,14 +83,6 @@ CREATE TABLE `categories` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data untuk tabel `categories`
---
-
-INSERT INTO `categories` (`id`, `name`, `slug`, `created_at`, `updated_at`) VALUES
-(1, 'Gold', 'gold', '2025-12-02 09:34:57', '2025-12-02 09:34:57'),
-(2, 'aaaa', 'aaaa', '2025-12-02 09:35:32', '2025-12-02 09:36:13');
-
 -- --------------------------------------------------------
 
 --
@@ -89,6 +97,20 @@ CREATE TABLE `failed_jobs` (
   `payload` longtext NOT NULL,
   `exception` longtext NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `heroes`
+--
+
+CREATE TABLE `heroes` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `order` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -147,10 +169,15 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (2, '0001_01_01_000001_create_cache_table', 1),
 (3, '0001_01_01_000002_create_jobs_table', 1),
 (4, '2025_12_02_160331_create_permission_tables', 1),
-(5, '2025_12_02_160803_add_extra_fields_to_users_table', 2),
-(6, '2025_12_02_161859_create_categories_table', 3),
-(7, '2025_12_02_164153_create_rooms_table', 4),
-(8, '2025_12_02_164358_create_room_photos_table', 5);
+(5, '2025_12_02_160803_add_extra_fields_to_users_table', 1),
+(6, '2025_12_02_161859_create_categories_table', 1),
+(7, '2025_12_02_164153_create_rooms_table', 1),
+(8, '2025_12_02_164358_create_room_photos_table', 1),
+(9, '2025_12_03_012401_create_price_packages_table', 1),
+(10, '2025_12_03_045219_create_heroes_table', 1),
+(11, '2025_12_03_064645_create_bookings_table', 1),
+(12, '2025_12_03_090716_create_monthly_bills_table', 1),
+(13, '2025_12_03_090809_create_payments_table', 1);
 
 -- --------------------------------------------------------
 
@@ -176,14 +203,29 @@ CREATE TABLE `model_has_roles` (
   `model_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data untuk tabel `model_has_roles`
+-- Struktur dari tabel `monthly_bills`
 --
 
-INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
-(1, 'App\\Models\\User', 1),
-(2, 'App\\Models\\User', 2),
-(2, 'App\\Models\\User', 3);
+CREATE TABLE `monthly_bills` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `booking_id` bigint(20) UNSIGNED NOT NULL,
+  `amount` int(11) NOT NULL,
+  `due_date` date NOT NULL,
+  `status` enum('pending','paid') NOT NULL DEFAULT 'pending',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `monthly_bills`
+--
+
+INSERT INTO `monthly_bills` (`id`, `booking_id`, `amount`, `due_date`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 750000, '2025-12-10', 'pending', '2025-12-03 02:14:36', '2025-12-03 02:14:36'),
+(2, 1, 750000, '2026-01-10', 'pending', '2025-12-03 02:14:36', '2025-12-03 02:14:36');
 
 -- --------------------------------------------------------
 
@@ -196,6 +238,34 @@ CREATE TABLE `password_reset_tokens` (
   `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `payments`
+--
+
+CREATE TABLE `payments` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `booking_id` bigint(20) UNSIGNED NOT NULL,
+  `bill_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `amount` int(11) NOT NULL,
+  `method` enum('cash','midtrans') NOT NULL,
+  `order_id` varchar(255) DEFAULT NULL,
+  `transaction_status` varchar(255) DEFAULT NULL,
+  `snap_token` varchar(255) DEFAULT NULL,
+  `paid_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `payments`
+--
+
+INSERT INTO `payments` (`id`, `booking_id`, `bill_id`, `amount`, `method`, `order_id`, `transaction_status`, `snap_token`, `paid_at`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 750000, 'cash', NULL, 'paid', NULL, '2025-12-03 02:14:36', '2025-12-03 02:14:36', '2025-12-03 02:14:36'),
+(2, 1, 1, 750000, 'midtrans', 'ORDER-692fff7c392ae', 'pending', 'dummy-snap-token', NULL, '2025-12-03 02:14:36', '2025-12-03 02:14:36');
 
 -- --------------------------------------------------------
 
@@ -214,6 +284,22 @@ CREATE TABLE `permissions` (
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `price_packages`
+--
+
+CREATE TABLE `price_packages` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `category_id` bigint(20) UNSIGNED NOT NULL,
+  `price_per_month` int(11) NOT NULL,
+  `facilities` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`facilities`)),
+  `is_popular` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `roles`
 --
 
@@ -224,14 +310,6 @@ CREATE TABLE `roles` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data untuk tabel `roles`
---
-
-INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'web', '2025-12-02 09:11:21', '2025-12-02 09:11:21'),
-(2, 'user', 'web', '2025-12-02 09:11:21', '2025-12-02 09:11:21');
 
 -- --------------------------------------------------------
 
@@ -266,11 +344,7 @@ CREATE TABLE `rooms` (
 --
 
 INSERT INTO `rooms` (`id`, `category_id`, `name`, `price`, `is_available`, `description`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Kamar B1', 500000, 1, 'Ready Kamar Kos', '2025-12-02 09:57:28', '2025-12-02 09:57:28'),
-(2, 1, 'Kamar B4', 500000, 0, 'Ready Kamar kos', '2025-12-02 10:15:49', '2025-12-02 10:15:49'),
-(3, 1, 'Kamar B0', 500000, 1, 'Tst', '2025-12-02 10:18:25', '2025-12-02 10:18:25'),
-(4, 1, 'Kamar B2', 700000, 1, 'TEst', '2025-12-02 10:19:53', '2025-12-02 10:19:53'),
-(5, 1, 'Kamar B6', 500000, 0, 'aaa', '2025-12-02 10:20:25', '2025-12-02 10:20:25');
+(1, NULL, 'Kamar Contoh', 750000, 1, 'Kamar testing seeder', '2025-12-03 02:14:36', '2025-12-03 02:14:36');
 
 -- --------------------------------------------------------
 
@@ -285,20 +359,6 @@ CREATE TABLE `room_photos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data untuk tabel `room_photos`
---
-
-INSERT INTO `room_photos` (`id`, `room_id`, `path`, `created_at`, `updated_at`) VALUES
-(5, 1, 'room_photos/NcXaSDBzYqMdldRRhO8Js4i4ECWNbSHHXXYQozl6.png', '2025-12-02 10:14:39', '2025-12-02 10:14:39'),
-(6, 1, 'room_photos/AX4PXJSH0Sk3emuZOytmg14vTnI0lBbEBy0E5WDM.png', '2025-12-02 10:14:39', '2025-12-02 10:14:39'),
-(7, 1, 'room_photos/W6LsALwOcuvtEJX2HmNI3JgRKtEPCeZ2xUzrCDns.png', '2025-12-02 10:14:39', '2025-12-02 10:14:39'),
-(9, 2, 'room_photos/NYV5x1Lf1sBdKhV867btM3JgdBnXdbeqwR2CXxgG.png', '2025-12-02 10:15:49', '2025-12-02 10:15:49'),
-(10, 2, 'room_photos/JQsMWGHvEyeOcjz03PMdGdXS1hj6r7vdsPXvxpEv.png', '2025-12-02 10:15:49', '2025-12-02 10:15:49'),
-(11, 3, 'room_photos/oyrUSOYG4l9W4UeHSYYk1DX3BSdakRlcUS5RBwDK.png', '2025-12-02 10:18:25', '2025-12-02 10:18:25'),
-(12, 4, 'room_photos/tQAY2ZlocIUGehhIdqPYfel8LN73vbU05sc8YGUU.jpg', '2025-12-02 10:19:53', '2025-12-02 10:19:53'),
-(13, 5, 'room_photos/Xw42fW3ZXvtWXaOTdRfR9rOtrLboTboPGtlq9wDu.jpg', '2025-12-02 10:20:25', '2025-12-02 10:20:25');
 
 -- --------------------------------------------------------
 
@@ -320,8 +380,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('Ez3MkPsZ1t2CeeZHpD1cTsWcMaI3JmFOBgkySc7A', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiYkJrN2ZQdnA3b1JUZmVzelc0TTNUd0dscnl2NjBCUnZEZVVJYzNoNiI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7czo1OiJyb3V0ZSI7czo0OiJob21lIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1764696091),
-('G120ly1whq2oO4REZBgueJ6NJJUekjfxXwDwpMkt', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieFVsMHExUHBFTXFoTmFDTG5pSldZOTUydlBoZndYVWtXSVlHQnRaeiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQvcm9vbXMiO3M6NToicm91dGUiO3M6MjE6ImRhc2hib2FyZC5yb29tcy5pbmRleCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1764696026);
+('9I79KQ1SwmTdZRfCd8BR1WMh0F0lZ9TIxpJHZzCi', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiQzBnTTlrS0p2cmVJU3RNY2tWRlhGaUJIYzRxQ013M3dEYldTU2pPcyI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7czo1OiJyb3V0ZSI7czo0OiJob21lIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1764753283);
 
 -- --------------------------------------------------------
 
@@ -348,13 +407,19 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `phone`, `gender`, `address`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Administrator', 'admin@example.com', NULL, NULL, NULL, NULL, '$2y$12$bGCsun/PgbPb.F906V73Z.G1qQ5n6oWZdObOMRDF/UynpMRIVmQZu', NULL, '2025-12-02 09:11:21', '2025-12-02 09:11:21'),
-(2, 'User Biasa', 'user@example.com', NULL, NULL, NULL, NULL, '$2y$12$.cwa4ANGvVGhGMTQBuElOeXIl107Mv90dWy0pxNaLKaKlHbxPmCt2', NULL, '2025-12-02 09:11:21', '2025-12-02 09:11:21'),
-(3, 'kurnia andi', 'indaharifah18@gmail.com', '081515815175', 'female', 'demak', NULL, '$2y$12$pqN3VXP0RvkfXnggpzafxeXCE87wcVTItE8IOeXW7wucj3Rd8HfD6', NULL, '2025-12-02 09:17:17', '2025-12-02 09:17:17');
+(1, 'Test User', 'user@test.com', NULL, NULL, NULL, '2025-12-03 02:14:35', '$2y$12$uQVK6/53wUV/xerynwpQ5.n44moa6Yfpqd2UVc5oM/QHJLHqtGUKq', '3CfiwyAbmZ', '2025-12-03 02:14:36', '2025-12-03 02:14:36');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indeks untuk tabel `bookings`
+--
+ALTER TABLE `bookings`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `bookings_user_id_foreign` (`user_id`),
+  ADD KEY `bookings_room_id_foreign` (`room_id`);
 
 --
 -- Indeks untuk tabel `cache`
@@ -381,6 +446,12 @@ ALTER TABLE `categories`
 ALTER TABLE `failed_jobs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+
+--
+-- Indeks untuk tabel `heroes`
+--
+ALTER TABLE `heroes`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeks untuk tabel `jobs`
@@ -416,10 +487,25 @@ ALTER TABLE `model_has_roles`
   ADD KEY `model_has_roles_model_id_model_type_index` (`model_id`,`model_type`);
 
 --
+-- Indeks untuk tabel `monthly_bills`
+--
+ALTER TABLE `monthly_bills`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `monthly_bills_booking_id_foreign` (`booking_id`);
+
+--
 -- Indeks untuk tabel `password_reset_tokens`
 --
 ALTER TABLE `password_reset_tokens`
   ADD PRIMARY KEY (`email`);
+
+--
+-- Indeks untuk tabel `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `payments_booking_id_foreign` (`booking_id`),
+  ADD KEY `payments_bill_id_foreign` (`bill_id`);
 
 --
 -- Indeks untuk tabel `permissions`
@@ -427,6 +513,13 @@ ALTER TABLE `password_reset_tokens`
 ALTER TABLE `permissions`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `permissions_name_guard_name_unique` (`name`,`guard_name`);
+
+--
+-- Indeks untuk tabel `price_packages`
+--
+ALTER TABLE `price_packages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `price_packages_category_id_foreign` (`category_id`);
 
 --
 -- Indeks untuk tabel `roles`
@@ -476,15 +569,27 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT untuk tabel `bookings`
+--
+ALTER TABLE `bookings`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT untuk tabel `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `heroes`
+--
+ALTER TABLE `heroes`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -497,7 +602,19 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT untuk tabel `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT untuk tabel `monthly_bills`
+--
+ALTER TABLE `monthly_bills`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT untuk tabel `payments`
+--
+ALTER TABLE `payments`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `permissions`
@@ -506,32 +623,45 @@ ALTER TABLE `permissions`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT untuk tabel `price_packages`
+--
+ALTER TABLE `price_packages`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT untuk tabel `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `rooms`
 --
 ALTER TABLE `rooms`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `room_photos`
 --
 ALTER TABLE `room_photos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
+
+--
+-- Ketidakleluasaan untuk tabel `bookings`
+--
+ALTER TABLE `bookings`
+  ADD CONSTRAINT `bookings_room_id_foreign` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `bookings_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Ketidakleluasaan untuk tabel `model_has_permissions`
@@ -544,6 +674,25 @@ ALTER TABLE `model_has_permissions`
 --
 ALTER TABLE `model_has_roles`
   ADD CONSTRAINT `model_has_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `monthly_bills`
+--
+ALTER TABLE `monthly_bills`
+  ADD CONSTRAINT `monthly_bills_booking_id_foreign` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`) ON DELETE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `payments`
+--
+ALTER TABLE `payments`
+  ADD CONSTRAINT `payments_bill_id_foreign` FOREIGN KEY (`bill_id`) REFERENCES `monthly_bills` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `payments_booking_id_foreign` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`) ON DELETE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `price_packages`
+--
+ALTER TABLE `price_packages`
+  ADD CONSTRAINT `price_packages_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE;
 
 --
 -- Ketidakleluasaan untuk tabel `role_has_permissions`

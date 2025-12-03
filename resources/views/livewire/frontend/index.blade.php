@@ -341,80 +341,44 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mt-14">
 
-                <!-- BASIC -->
-                <div class="bg-white shadow-xl rounded-2xl p-8 border border-gray-200 hover:-translate-y-2 transition">
-                    <h4 class="text-xl font-bold text-gray-800">Basic</h4>
-                    <p class="text-gray-500 mt-1">Pilihan hemat untuk kebutuhan dasar</p>
+                @foreach ($packages as $package)
+                <div class="bg-white shadow-xl rounded-2xl p-8 border 
+            {{ $package->is_popular ? 'border-2 border-indigo-600 scale-105 relative' : 'border-gray-200 hover:-translate-y-2 transition' }}">
 
-                    <h3 class="text-4xl font-extrabold text-indigo-600 mt-6">
-                        Rp 750.000
-                        <span class="text-lg text-gray-500 font-medium">/bulan</span>
-                    </h3>
-
-                    <ul class="text-left space-y-3 mt-6 text-gray-600">
-                        <li>• Kasur & Lemari</li>
-                        <li>• Kamar mandi luar</li>
-                        <li>• Akses WiFi normal</li>
-                        <li>• Kebersihan mingguan</li>
-                    </ul>
-
-                    <button class="mt-8 w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold">
-                        Pilih Basic
-                    </button>
-                </div>
-
-                <!-- GOLD (HIGHLIGHT) -->
-                <div class="bg-white shadow-2xl rounded-2xl p-8 border-2 border-indigo-600 scale-105 relative">
-
+                    {{-- Badge Paling Populer --}}
+                    @if ($package->is_popular)
                     <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-600 text-white px-4 py-1 rounded-full text-sm font-semibold shadow">
                         Paling Populer
                     </span>
+                    @endif
 
-                    <h4 class="text-xl font-bold text-gray-800">Gold</h4>
-                    <p class="text-gray-500 mt-1">Kamar nyaman dengan fasilitas lebih lengkap</p>
+                    <h4 class="text-xl font-bold text-gray-800">
+                        {{ $package->category->name ?? 'Tanpa Kategori' }}
+                    </h4>
+
+                    <p class="text-gray-500 mt-1">
+                        Paket terbaik dari kategori {{ $package->category->name ?? '-' }}
+                    </p>
 
                     <h3 class="text-4xl font-extrabold text-indigo-600 mt-6">
-                        Rp 950.000
+                        Rp {{ number_format($package->price_per_month, 0, ',', '.') }}
                         <span class="text-lg text-gray-500 font-medium">/bulan</span>
                     </h3>
 
                     <ul class="text-left space-y-3 mt-6 text-gray-600">
-                        <li>• Kasur premium & lemari besar</li>
-                        <li>• Kamar mandi dalam</li>
-                        <li>• WiFi cepat 50 Mbps</li>
-                        <li>• Kebersihan 2x seminggu</li>
-                        <li>• Meja belajar</li>
+                        @foreach ($package->facilities as $item)
+                        <li>• {{ $item }}</li>
+                        @endforeach
                     </ul>
 
                     <button class="mt-8 w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold">
-                        Pilih Gold
+                        Lihat Kamar {{ $package->category->name }}
                     </button>
                 </div>
-
-                <!-- PREMIUM -->
-                <div class="bg-white shadow-xl rounded-2xl p-8 border border-gray-200 hover:-translate-y-2 transition">
-                    <h4 class="text-xl font-bold text-gray-800">Premium</h4>
-                    <p class="text-gray-500 mt-1">Fasilitas terbaik untuk kenyamanan maksimal</p>
-
-                    <h3 class="text-4xl font-extrabold text-indigo-600 mt-6">
-                        Rp 1.250.000
-                        <span class="text-lg text-gray-500 font-medium">/bulan</span>
-                    </h3>
-
-                    <ul class="text-left space-y-3 mt-6 text-gray-600">
-                        <li>• Tempat tidur premium</li>
-                        <li>• AC + kamar mandi dalam</li>
-                        <li>• WiFi super cepat 100 Mbps</li>
-                        <li>• Kebersihan harian</li>
-                        <li>• Smart TV</li>
-                    </ul>
-
-                    <button class="mt-8 w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold">
-                        Pilih Premium
-                    </button>
-                </div>
+                @endforeach
 
             </div>
+
         </div>
     </section>
 

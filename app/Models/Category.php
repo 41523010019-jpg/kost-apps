@@ -32,4 +32,8 @@ class Category extends Model
             }
         });
     }
+    public function pricePackages()
+    {
+        return $this->hasMany(PricePackage::class);
+    }
 }
