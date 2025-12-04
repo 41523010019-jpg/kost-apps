@@ -13,8 +13,15 @@
 
 <body class="min-h-screen bg-gray-50 font-inter">
 
-    {{-- Slot konten utama --}}
-    {{ $slot }}
+     @include('components.frontend.header')
+
+    {{-- CONTENT --}}
+    <main class="pt-24">
+        {{ $slot }}
+    </main>
+
+    {{-- FOOTER --}}
+    @include('components.frontend.footer')
 
     @livewireScripts
 </body>

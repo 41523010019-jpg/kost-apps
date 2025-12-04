@@ -36,4 +36,8 @@ class Category extends Model
     {
         return $this->hasMany(PricePackage::class);
     }
+    public function rooms()
+    {
+        return $this->hasMany(Room::class);
+    }
 }
