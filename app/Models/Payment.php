@@ -15,13 +15,11 @@ class Payment extends Model
         'paid_at' => 'datetime',
     ];
 
-    public function booking()
-    {
-        return $this->belongsTo(Booking::class);
+    public function bill() {
+        return $this->belongsTo(MonthlyBill::class, 'bill_id');
     }
 
-    public function bill()
-    {
-        return $this->belongsTo(MonthlyBill::class, 'bill_id');
+    public function booking() {
+        return $this->belongsTo(Booking::class, 'booking_id');
     }
 }

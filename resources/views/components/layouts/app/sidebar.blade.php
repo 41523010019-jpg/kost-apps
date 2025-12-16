@@ -15,21 +15,65 @@
 
         <flux:navlist variant="outline">
             <flux:navlist.group :heading="__('Platform')" class="grid">
-                <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                <flux:navlist.item icon="folder-git-2" :href="route('dashboard.categories.index')" :current="request()->routeIs('dashboard.categories.index')" wire:navigate>
+
+                {{-- Menu umum --}}
+                <flux:navlist.item icon="home"
+                    :href="route('dashboard')"
+                    :current="request()->routeIs('dashboard')"
+                    wire:navigate>
+                    {{ __('Dashboard') }}
+                </flux:navlist.item>
+
+                <flux:navlist.item icon="folder-git-2"
+                    :href="route('dashboard.bookings.index')"
+                    :current="request()->routeIs('dashboard.bookings.index')"
+                    wire:navigate>
+                    {{ __('Bookings') }}
+                </flux:navlist.item>
+
+
+                {{-- Menu khusus Admin --}}
+                {{-- Menu khusus Admin --}}
+                @role('admin')
+                <flux:navlist.item icon="folder-git-2"
+                    :href="route('dashboard.categories.index')"
+                    :current="request()->routeIs('dashboard.categories.index')"
+                    wire:navigate>
                     {{ __('Categories') }}
                 </flux:navlist.item>
-                <flux:navlist.item icon="folder-git-2" :href="route('dashboard.rooms.index')" :current="request()->routeIs('dashboard.rooms.index')" wire:navigate>
+
+                <flux:navlist.item icon="folder-git-2"
+                    :href="route('dashboard.rooms.index')"
+                    :current="request()->routeIs('dashboard.rooms.index')"
+                    wire:navigate>
                     {{ __('Rooms') }}
                 </flux:navlist.item>
-                <flux:navlist.item icon="folder-git-2" :href="route('dashboard.price-packages.index')" :current="request()->routeIs('dashboard.price-packages.index')" wire:navigate>
+
+                <flux:navlist.item icon="folder-git-2"
+                    :href="route('dashboard.price-packages.index')"
+                    :current="request()->routeIs('dashboard.price-packages.index')"
+                    wire:navigate>
                     {{ __('Price Packages') }}
                 </flux:navlist.item>
-                <flux:navlist.item icon="folder-git-2" :href="route('dashboard.heroes.index')" :current="request()->routeIs('dashboard.heroes.index')" wire:navigate>
+
+                <flux:navlist.item icon="folder-git-2"
+                    :href="route('dashboard.heroes.index')"
+                    :current="request()->routeIs('dashboard.heroes.index')"
+                    wire:navigate>
                     {{ __('Heroes') }}
                 </flux:navlist.item>
+                <flux:navlist.item icon="folder-git-2"
+                    :href="route('dashboard.payment-gateway.index')"
+                    :current="request()->routeIs('dashboard.payment-gateway.index')"
+                    wire:navigate>
+                    {{ __('Payment Gateway') }}
+                </flux:navlist.item>
+                @endrole
+
+
             </flux:navlist.group>
         </flux:navlist>
+
 
         <flux:spacer />
 
@@ -138,6 +182,8 @@
     {{ $slot }}
 
     @fluxScripts
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('midtrans.client_key') }}"></script>
 </body>
 
 </html>

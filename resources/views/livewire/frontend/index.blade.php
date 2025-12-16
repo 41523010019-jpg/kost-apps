@@ -100,7 +100,7 @@
             <div class="flex items-center justify-between mb-10">
                 <h3 class="text-3xl font-bold text-gray-800">Kamar Tersedia</h3>
 
-                <a href="/kamar"
+                <a href="/rooms"
                     class="text-indigo-600 hover:text-indigo-700 font-semibold text-sm md:text-base">
                     Lihat Semua Kamar →
                 </a>

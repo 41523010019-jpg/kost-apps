@@ -169,12 +169,10 @@
     </div>
 
 
-    <!-- MODAL BOOKING -->
-    <!-- MODAL BOOKING -->
     <div x-show="bookingModal"
         x-transition
         @click.self="bookingModal = false"
-        wire:ignore.self
+        wire:ignore
         class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
 
         <div class="bg-white p-8 rounded-2xl shadow-xl w-96">
@@ -192,6 +190,23 @@
                     class="mt-1 w-full border-gray-300 rounded-xl">
             </div>
 
+            <!-- OPSI PEMBAYARAN -->
+            <div class="mt-6">
+                <label class="font-medium text-gray-700">Metode Pembayaran</label>
+
+                <div class="mt-2 space-y-2">
+                    <label class="flex items-center space-x-3">
+                        <input type="radio" wire:model="payment_method" value="cash">
+                        <span>Bayar Cash</span>
+                    </label>
+
+                    <label class="flex items-center space-x-3">
+                        <input type="radio" wire:model="payment_method" value="midtrans">
+                        <span>Midtrans (Online Payment)</span>
+                    </label>
+                </div>
+            </div>
+
             <button
                 wire:click="createBooking({{ $room->id }})"
                 wire:loading.attr="disabled"
@@ -207,27 +222,31 @@
             </button>
         </div>
     </div>
-
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key="{{ config('midtrans.client_key') }}"></script>
+    <script
+        src="https://app{{ \App\Services\MidtransConfig::get()['is_production'] ? '' : '.sandbox' }}.midtrans.com/snap/snap.js"
+        data-client-key="{{ \App\Services\MidtransConfig::get()['client_key'] }}">
+    </script>
 
     <script>
-        Livewire.on('open-snap', data => {
-            snap.pay(data.snapToken, {
-                onSuccess: function(result) {
-                    window.location.href = "/payment/success";
-                },
-                onPending: function(result) {
-                    console.log("pending");
-                },
-                onError: function(result) {
-                    alert("Pembayaran gagal");
-                },
-                onClose: function() {
-                    alert("Anda menutup popup tanpa menyelesaikan pembayaran");
-                }
+        document.addEventListener('livewire:navigated', () => {
+            Livewire.on('open-snap', ({
+                snapToken
+            }) => {
+                snap.pay(snapToken, {
+                    onSuccess: function(result) {
+                        window.location.href = "/dashboard/bookings";
+                    },
+                    onPending: function(result) {
+                        console.log("pending");
+                    },
+                    onError: function(result) {
+                        alert("Pembayaran gagal");
+                    },
+                    onClose: function() {
+                        alert("Anda menutup popup tanpa menyelesaikan pembayaran");
+                    }
+                });
             });
         });
     </script>
-
 </div>
