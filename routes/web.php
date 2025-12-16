@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentWebhookController;
+use App\Livewire\Backend\About\Index as AboutIndex;
 use App\Livewire\Backend\Booking\Index as BookingIndex;
 use App\Livewire\Backend\Category\Index as CategoryIndex;
 use App\Livewire\Backend\Hero\Index as HeroIndex;
@@ -41,6 +42,7 @@ Route::prefix('dashboard')
         Route::get('heroes', HeroIndex::class)->name('heroes.index');
         Route::get('bookings', BookingIndex::class)->name('bookings.index');
         Route::get('payment-gateway', PaymentGatewayIndex::class)->name('payment-gateway.index');
+        Route::get('about', AboutIndex::class)->name('about.index');
     });
 
 Route::middleware(['auth'])->group(function () {

@@ -5,6 +5,7 @@ namespace App\Livewire\Frontend;
 use App\Models\Room;
 use App\Models\PricePackage;
 use App\Models\Hero;
+use App\Models\About;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -17,6 +18,14 @@ class Index extends Component
         $packages = PricePackage::with('category')->get();
         $heroes = Hero::orderBy('order')->get();
 
-        return view('livewire.frontend.index', compact('rooms', 'packages', 'heroes'));
+        // Ambil 1 data About saja
+        $about = About::first();
+
+        return view('livewire.frontend.index', compact(
+            'rooms',
+            'packages',
+            'heroes',
+            'about'
+        ));
     }
 }

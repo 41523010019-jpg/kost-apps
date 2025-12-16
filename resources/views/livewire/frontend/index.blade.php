@@ -84,13 +84,17 @@
     <!-- TENTANG KOS -->
     <section class="py-20 bg-white">
         <div class="max-w-6xl mx-auto px-6 text-center">
-            <h3 class="text-3xl font-bold text-gray-800">Tentang Kos</h3>
+            <h3 class="text-3xl font-bold text-gray-800">
+                {{ $about?->title ?? 'Tentang Kos' }}
+            </h3>
+
             <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
-                Kos Harmoni menyediakan kamar bersih, fasilitas lengkap, dan suasana yang nyaman.
-                Lokasi dekat kampus, minimarket, dan transportasi umum.
+                {{ $about?->description ?? '' }}
             </p>
         </div>
     </section>
+
+
 
     <!-- LIST KAMAR -->
     <section id="kamar" class="py-20">

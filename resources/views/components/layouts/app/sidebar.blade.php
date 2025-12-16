@@ -68,6 +68,12 @@
                     wire:navigate>
                     {{ __('Payment Gateway') }}
                 </flux:navlist.item>
+                <flux:navlist.item icon="folder-git-2"
+                    :href="route('dashboard.about.index')"
+                    :current="request()->routeIs('dashboard.about.index')"
+                    wire:navigate>
+                    {{ __('About') }}
+                </flux:navlist.item>
                 @endrole
 
 
