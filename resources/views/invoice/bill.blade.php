@@ -27,7 +27,7 @@
             padding: 25px;
             border-radius: 10px;
             border: 1px solid #e5e9f2;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
             margin-bottom: 25px;
         }
 
@@ -59,7 +59,7 @@
             padding: 20px;
             border-radius: 10px;
             border: 1px solid #e5e9f2;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             margin-bottom: 25px;
         }
 
@@ -158,9 +158,38 @@
         <!-- HEADER -->
         <div class="header">
             <div class="header-left">
-                <img src="{{ public_path('logo.png') }}" alt="Logo">
-                <div style="font-size:14px; font-weight:bold; margin-top:5px;">Nama Kost / Perusahaan</div>
-                <div style="font-size:11px;">Alamat Kost...</div>
+                @php
+                use App\Models\WebSetting;
+                use App\Models\Contact;
+
+                $websetting = WebSetting::first(); // Ambil data websetting aktif
+                $contact = Contact::where('is_active', 1)->first(); // Ambil contact aktif
+                @endphp
+
+                <div style="font-size:14px; font-weight:bold; margin-top:5px;">
+                    {{-- Nama Kost / Perusahaan --}}
+                    {{ $websetting?->site_title ?? 'Nama Kost / Perusahaan' }}
+                </div>
+
+                <div style="font-size:11px;">
+                    {{-- Alamat lengkap dari Contact --}}
+                    {{ $contact?->address ?? 'Alamat tidak tersedia' }}
+                    @if($contact?->address_note)
+                    ({{ $contact->address_note }})
+                    @endif
+                </div>
+
+                <div style="font-size:11px; margin-top:2px;">
+                    {{-- Kontak tambahan --}}
+                    @if($contact?->phone)
+                    Telepon: {{ $contact->phone }}
+                    @if($contact->phone_note) ({{ $contact->phone_note }}) @endif
+                    @endif
+                    @if($contact?->email)
+                    | Email: {{ $contact->email }}
+                    @endif
+                </div>
+
             </div>
 
             <div class="header-title">
@@ -253,4 +282,5 @@
     </div>
 
 </body>
+
 </html>

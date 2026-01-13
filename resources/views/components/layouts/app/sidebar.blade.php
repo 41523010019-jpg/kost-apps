@@ -9,9 +9,10 @@
     <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
-        <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
+        <a href="{{ url('/') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
             <x-app-logo />
         </a>
+
 
         <flux:navlist variant="outline">
             <flux:navlist.group :heading="__('Platform')" class="grid">
@@ -24,7 +25,7 @@
                     {{ __('Dashboard') }}
                 </flux:navlist.item>
 
-                <flux:navlist.item icon="folder-git-2"
+                <flux:navlist.item icon="book-open-text"
                     :href="route('dashboard.bookings.index')"
                     :current="request()->routeIs('dashboard.bookings.index')"
                     wire:navigate>
@@ -35,44 +36,74 @@
                 {{-- Menu khusus Admin --}}
                 {{-- Menu khusus Admin --}}
                 @role('admin')
-                <flux:navlist.item icon="folder-git-2"
+                <flux:navlist.item icon="book-open-text"
                     :href="route('dashboard.categories.index')"
                     :current="request()->routeIs('dashboard.categories.index')"
                     wire:navigate>
                     {{ __('Categories') }}
                 </flux:navlist.item>
 
-                <flux:navlist.item icon="folder-git-2"
+                <flux:navlist.item icon="book-open-text"
                     :href="route('dashboard.rooms.index')"
                     :current="request()->routeIs('dashboard.rooms.index')"
                     wire:navigate>
                     {{ __('Rooms') }}
                 </flux:navlist.item>
 
-                <flux:navlist.item icon="folder-git-2"
+                <flux:navlist.item icon="book-open-text"
                     :href="route('dashboard.price-packages.index')"
                     :current="request()->routeIs('dashboard.price-packages.index')"
                     wire:navigate>
                     {{ __('Price Packages') }}
                 </flux:navlist.item>
 
-                <flux:navlist.item icon="folder-git-2"
+                <flux:navlist.item icon="book-open-text"
                     :href="route('dashboard.heroes.index')"
                     :current="request()->routeIs('dashboard.heroes.index')"
                     wire:navigate>
                     {{ __('Heroes') }}
                 </flux:navlist.item>
-                <flux:navlist.item icon="folder-git-2"
+                <flux:navlist.item icon="book-open-text"
                     :href="route('dashboard.payment-gateway.index')"
                     :current="request()->routeIs('dashboard.payment-gateway.index')"
                     wire:navigate>
                     {{ __('Payment Gateway') }}
                 </flux:navlist.item>
-                <flux:navlist.item icon="folder-git-2"
+                <flux:navlist.item icon="book-open-text"
                     :href="route('dashboard.about.index')"
                     :current="request()->routeIs('dashboard.about.index')"
                     wire:navigate>
                     {{ __('About') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="book-open-text"
+                    :href="route('dashboard.facility.index')"
+                    :current="request()->routeIs('dashboard.facility.index')"
+                    wire:navigate>
+                    {{ __('Facility') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="book-open-text"
+                    :href="route('dashboard.contacts.index')"
+                    :current="request()->routeIs('dashboard.contacts.index')"
+                    wire:navigate>
+                    {{ __('Contacts') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="book-open-text"
+                    :href="route('dashboard.web-setting.index')"
+                    :current="request()->routeIs('dashboard.web-setting.index')"
+                    wire:navigate>
+                    {{ __('Web Setting') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="book-open-text"
+                    :href="route('dashboard.export.index')"
+                    :current="request()->routeIs('dashboard.export.index')"
+                    wire:navigate>
+                    {{ __('Laporan') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="book-open-text"
+                    :href="route('dashboard.users.index')"
+                    :current="request()->routeIs('dashboard.users.index')"
+                    wire:navigate>
+                    {{ __('Users') }}
                 </flux:navlist.item>
                 @endrole
 
@@ -83,15 +114,6 @@
 
         <flux:spacer />
 
-        <flux:navlist variant="outline">
-            <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                {{ __('Repository') }}
-            </flux:navlist.item>
-
-            <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                {{ __('Documentation') }}
-            </flux:navlist.item>
-        </flux:navlist>
 
         <!-- Desktop User Menu -->
         <flux:dropdown class="hidden lg:block" position="bottom" align="start">

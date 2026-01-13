@@ -104,10 +104,13 @@
             <div class="flex items-center justify-between mb-10">
                 <h3 class="text-3xl font-bold text-gray-800">Kamar Tersedia</h3>
 
-                <a href="/rooms"
+                <a
+                    wire:navigate
+                    href="/rooms"
                     class="text-indigo-600 hover:text-indigo-700 font-semibold text-sm md:text-base">
                     Lihat Semua Kamar →
                 </a>
+
             </div>
 
             <!-- SLIDER -->
@@ -208,12 +211,16 @@
 
                                 <a
                                     :href="`/rooms/${room.id}`"
+                                    wire:navigate
                                     :class="room.status === 'full'
         ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
         : 'bg-indigo-600 text-white hover:bg-indigo-700'"
-                                    class="mt-5 w-full py-3 rounded-xl font-semibold text-center block transition">
+                                    class="mt-5 w-full py-3 rounded-xl font-semibold text-center block transition"
+                                    :aria-disabled="room.status === 'full'"
+                                    @click.prevent="room.status === 'full' && $event.preventDefault()">
                                     Lihat Detail
                                 </a>
+
 
                             </div>
                         </div>
@@ -231,76 +238,32 @@
     <!-- FASILITAS -->
     <section id="fasilitas" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-6">
-            <h3 class="text-3xl font-bold text-center text-gray-800 mb-12">Fasilitas Kos</h3>
+            <h3 class="text-3xl font-bold text-center text-gray-800 mb-12">
+                Fasilitas Kos
+            </h3>
+
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
-
+                @forelse ($facilities as $facility)
                 <div class="p-8 bg-gray-50 rounded-2xl shadow hover:-translate-y-1 transition">
-                    <!-- Globe Alt Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                            d="M12 21a9 9 0 100-18 9 9 0 000 18zM2.458 12C3.732 7.943 7.522 5 12 5c4.478 0 8.268 2.943 9.542 7M2.458 12c1.274 4.057 5.064 7 9.542 7 4.478 0 8.268-2.943 9.542-7M2.458 12H21.54" />
-                    </svg>
-                    <h4 class="font-semibold mt-2">WiFi Cepat</h4>
-                </div>
+                    @if ($facility->icon)
+                    <div class="flex justify-center mb-3">
+                        {!! $facility->icon !!}
+                    </div>
+                    @endif
 
-                <div class="p-8 bg-gray-50 rounded-2xl shadow hover:-translate-y-1 transition">
-                    <!-- Bed Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                            d="M3 7v10m18 0V7M3 12h18M7 7h10a3 3 0 013 3v2H4v-2a3 3 0 013-3z" />
-                    </svg>
-                    <h4 class="font-semibold mt-2">Kasur & Lemari</h4>
+                    <h4 class="font-semibold mt-2">
+                        {{ $facility->name }}
+                    </h4>
                 </div>
-
-                <div class="p-8 bg-gray-50 rounded-2xl shadow hover:-translate-y-1 transition">
-                    <!-- Shower Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                            d="M4 4l16 0M8 4v3a4 4 0 008 0V4" />
-                        <path stroke-linecap="round" stroke-width="1.5" d="M8 14v.01M12 14v.01M16 14v.01" />
-                    </svg>
-                    <h4 class="font-semibold mt-2">Kamar Mandi Dalam</h4>
+                @empty
+                <div class="col-span-full text-center text-gray-500">
+                    Fasilitas belum tersedia.
                 </div>
-
-                <div class="p-8 bg-gray-50 rounded-2xl shadow hover:-translate-y-1 transition">
-                    <!-- Parking Icon (Using Square + P) -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <rect x="3" y="3" width="18" height="18" rx="3" stroke-width="1.5" />
-                        <path d="M10 16V8h3a2 2 0 010 4h-3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <h4 class="font-semibold mt-2">Parkir Luas</h4>
-                </div>
-
-                <div class="p-8 bg-gray-50 rounded-2xl shadow hover:-translate-y-1 transition">
-                    <!-- CCTV Icon (Video Camera) -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                            d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m0-4v4m0-4H5a2 2 0 00-2 2v0a2 2 0 002 2h10" />
-                    </svg>
-                    <h4 class="font-semibold mt-2">CCTV 24 Jam</h4>
-                </div>
-
-                <div class="p-8 bg-gray-50 rounded-2xl shadow hover:-translate-y-1 transition">
-                    <!-- Door Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                            d="M7 21V5a2 2 0 012-2h6a2 2 0 012 2v16M10 11h.01" />
-                    </svg>
-                    <h4 class="font-semibold mt-2">One Gate System</h4>
-                </div>
-
-                <div class="p-8 bg-gray-50 rounded-2xl shadow hover:-translate-y-1 transition">
-                    <!-- Shield Check Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                            d="M12 3l7 4v5a9 9 0 11-14 0V7l7-4z" />
-                    </svg>
-                    <h4 class="font-semibold mt-2">Security 24 Jam</h4>
-                </div>
-
+                @endforelse
             </div>
         </div>
     </section>
+
 
 
     <!-- PRICING -->
@@ -343,9 +306,15 @@
                         @endforeach
                     </ul>
 
-                    <button class="mt-8 w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold">
+                    <a
+                        :href="`/rooms`"
+                        wire:navigate
+                        class="mt-8 w-full py-3 rounded-xl font-semibold text-center block transition
+           bg-indigo-600 hover:bg-indigo-700 text-white">
                         Lihat Kamar {{ $package->category->name }}
-                    </button>
+                    </a>
+
+
                 </div>
                 @endforeach
 
@@ -361,58 +330,86 @@
 
             <!-- TEXT -->
             <div>
-                <h3 class="text-3xl font-bold text-gray-800">Hubungi Kami</h3>
+                <h3 class="text-3xl font-bold text-gray-800">
+                    {{ $contact->title ?? 'Hubungi Kami' }}
+                </h3>
+
+                @if($contact?->description)
                 <p class="mt-4 text-gray-600">
-                    Jika Anda memiliki pertanyaan, ingin melihat kamar, atau ingin booking,
-                    silakan hubungi kami melalui kontak berikut.
+                    {{ $contact->description }}
                 </p>
+                @endif
 
                 <div class="mt-8 space-y-5 text-gray-700">
 
+                    {{-- Alamat --}}
+                    @if($contact?->address)
                     <div class="flex items-start space-x-4">
                         <div class="bg-indigo-600 text-white p-3 rounded-xl shadow">
                             📍
                         </div>
                         <p>
-                            Jl. Harmoni No. 21, Kota Yogyakarta
-                            Dekat kampus, minimarket, dan halte bus utama.
+                            {{ $contact->address }}
+                            @if($contact->address_note)
+                            <span class="block text-gray-500 text-sm">
+                                {{ $contact->address_note }}
+                            </span>
+                            @endif
                         </p>
                     </div>
+                    @endif
 
+                    {{-- Telepon / WhatsApp --}}
+                    @if($contact?->phone)
                     <div class="flex items-start space-x-4">
                         <div class="bg-indigo-600 text-white p-3 rounded-xl shadow">
                             📞
                         </div>
                         <p>
-                            0812-3456-7890
-                            <span class="text-gray-500 text-sm">Fast response via WhatsApp</span>
+                            <a
+                                href="https://wa.me/{{ preg_replace('/\D/', '', $contact->phone) }}"
+                                target="_blank"
+                                class="font-medium hover:underline">
+                                {{ $contact->phone }}
+                            </a>
+
+                            @if($contact->phone_note)
+                            <span class="block text-gray-500 text-sm">
+                                {{ $contact->phone_note }}
+                            </span>
+                            @endif
                         </p>
                     </div>
+                    @endif
 
+                    {{-- Email --}}
+                    @if($contact?->email)
                     <div class="flex items-start space-x-4">
                         <div class="bg-indigo-600 text-white p-3 rounded-xl shadow">
                             ✉️
                         </div>
-                        <p>kosharmoni@gmail.com</p>
+                        <p>
+                            <a href="mailto:{{ $contact->email }}" class="hover:underline">
+                                {{ $contact->email }}
+                            </a>
+                        </p>
                     </div>
+                    @endif
 
                 </div>
             </div>
 
             <!-- MAP -->
             <div class="w-full h-72 rounded-2xl overflow-hidden shadow-lg">
-                <iframe
-                    class="w-full h-full"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.3864183006904!2d110.3671!3d-7.9819"
-                    allowfullscreen="" loading="lazy">
-                </iframe>
+                @if($contact?->map_embed)
+                {!! $contact->map_embed !!}
+                @else
+                <div class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-500">
+                    Peta belum tersedia
+                </div>
+                @endif
             </div>
 
         </div>
     </section>
-
-
-
-
-    </style>
 </div>
